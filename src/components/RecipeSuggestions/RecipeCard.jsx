@@ -4,7 +4,7 @@ import { ChefHat } from "lucide-react"
 export function RecipeCard({ recipe, onSelect, isLoading }) {
   return (
     <Card.Root
-      h="220px"
+      minH="200px"
       cursor="pointer"
       transition="all 0.2s ease"
       _hover={{
@@ -14,8 +14,10 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
       onClick={() => !isLoading && onSelect(recipe)}
       opacity={isLoading ? 0.7 : 1}
       pointerEvents={isLoading ? "none" : "auto"}
+      display="flex"
+      flexDirection="column"
     >
-      <Card.Body p={6}>
+      <Card.Body p={6} display="flex" flexDirection="column" h="full">
         <VStack spacing={4} h="full" justify="space-between" align="stretch">
           <VStack spacing={3} align="start" flex={1}>
             <Text
@@ -33,7 +35,7 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
               color="neutral.600"
               lineHeight={1.5}
               flex={1}
-              noOfLines={3}
+              noOfLines={4}
             >
               {recipe.description}
             </Text>
@@ -41,7 +43,7 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
 
           <Button
             size="md"
-            colorScheme="orange"
+            colorPalette="orange"
             w="full"
             leftIcon={<ChefHat size={18} />}
             onClick={(e) => {
@@ -53,6 +55,7 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
               transform: "scale(0.98)"
             }}
             transition="all 0.1s"
+            mt="auto"
           >
             Select Recipe
           </Button>

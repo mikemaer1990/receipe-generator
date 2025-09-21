@@ -89,7 +89,7 @@ function App() {
   }
 
   return (
-    <Box minH="100vh" bg="neutral.50">
+    <Box minH="100vh" bg="neutral.50" display="flex" flexDirection="column">
       {/* App Header */}
       <Box
         bg="linear-gradient(135deg, #FF8C42 0%, #D2001F 100%)"
@@ -148,7 +148,7 @@ function App() {
       </Box>
 
       {/* Main Content */}
-      <Container maxW="6xl" py={4}>
+      <Container maxW="6xl" py={4} flex={1} display="flex" flexDirection="column">
         {appState === APP_STATES.BUILDER && (
           <RecipeBuilder
             onGenerateRecipes={handleGenerateRecipes}
@@ -183,7 +183,7 @@ function App() {
       </Container>
 
       {/* Footer */}
-      <Box as="footer" bg="neutral.800" color="white" py={6} mt={16}>
+      <Box as="footer" bg="neutral.800" color="white" py={6} mt="auto">
         <Container maxW="6xl">
           <VStack spacing={2} textAlign="center">
             <Text fontSize="sm" color="neutral.300">

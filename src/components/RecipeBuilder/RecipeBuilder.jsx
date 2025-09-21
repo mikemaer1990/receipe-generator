@@ -20,6 +20,7 @@ export function RecipeBuilder({ onGenerateRecipes, isLoading }) {
     customStarchName: '',
     extraIngredients: [],
     cookingStyle: null,
+    customCookingStyleName: '',
     preference: 'none'
   })
 
@@ -54,6 +55,7 @@ export function RecipeBuilder({ onGenerateRecipes, isLoading }) {
       customStarchName: '',
       extraIngredients: [],
       cookingStyle: null,
+      customCookingStyleName: '',
       preference: 'none'
     }
     setFormData(initialState)
@@ -151,6 +153,8 @@ export function RecipeBuilder({ onGenerateRecipes, isLoading }) {
         <StyleCards
           selectedStyle={formData.cookingStyle}
           onStyleChange={(value) => updateFormData('cookingStyle', value)}
+          customStyleName={formData.customCookingStyleName}
+          onCustomStyleChange={(value) => updateFormData('customCookingStyleName', value)}
         />
 
         <Separator />

@@ -17,7 +17,7 @@ export function RecipeSuggestions({
 }) {
   if (isLoading) {
     return (
-      <VStack spacing={8} align="stretch" maxW="6xl" mx="auto" p={6}>
+      <VStack spacing={8} align="stretch" maxW="4xl" mx="auto" pt={0} px={6} pb={6}>
         <VStack spacing={4} textAlign="center">
           <Heading size="xl" color="neutral.700">
             Cooking Up Something Special...
@@ -34,7 +34,7 @@ export function RecipeSuggestions({
 
   if (error) {
     return (
-      <VStack spacing={8} align="stretch" maxW="4xl" mx="auto" p={6}>
+      <VStack spacing={8} align="stretch" maxW="4xl" mx="auto" pt={0} px={6} pb={6}>
         <ErrorMessage
           title="Failed to Generate Recipes"
           message={error.message || "Something went wrong while generating your recipes."}
@@ -44,7 +44,7 @@ export function RecipeSuggestions({
         <HStack justify="center" spacing={4}>
           <Button
             variant="ghost"
-            colorScheme="orange"
+            colorPalette="orange"
             leftIcon={<ArrowLeft size={16} />}
             onClick={onStartOver}
           >
@@ -52,7 +52,7 @@ export function RecipeSuggestions({
           </Button>
           <Button
             variant="outline"
-            colorScheme="orange"
+            colorPalette="orange"
             leftIcon={<RotateCcw size={16} />}
             onClick={onTryAgain}
           >
@@ -74,12 +74,13 @@ export function RecipeSuggestions({
   }
 
   return (
-    <VStack spacing={8} align="stretch" maxW="6xl" mx="auto" p={6}>
+    <VStack spacing={8} align="stretch" maxW="4xl" mx="auto" pt={0} px={6} pb={6}>
+
       {/* Navigation */}
       <HStack justify="space-between" align="center">
         <Button
           variant="ghost"
-          colorScheme="orange"
+          colorPalette="orange"
           size="sm"
           leftIcon={<ArrowLeft size={16} />}
           onClick={onStartOver}
@@ -89,7 +90,7 @@ export function RecipeSuggestions({
 
         <Button
           variant="ghost"
-          colorScheme="orange"
+          colorPalette="orange"
           size="sm"
           leftIcon={<RotateCcw size={16} />}
           onClick={onTryAgain}
@@ -110,7 +111,7 @@ export function RecipeSuggestions({
       </VStack>
 
       {/* Recipe Cards */}
-      <Box>
+      <Box bg="white" borderWidth="1px" borderColor="neutral.200" borderRadius="lg" p={6}>
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
           {recipes.map((recipe, index) => (
             <RecipeCard
@@ -131,7 +132,7 @@ export function RecipeSuggestions({
           </Text>
           <HStack spacing={4}>
             <Button
-              colorScheme="orange"
+              colorPalette="orange"
               onClick={onTryAgain}
               leftIcon={<RotateCcw size={16} />}
             >
@@ -139,7 +140,7 @@ export function RecipeSuggestions({
             </Button>
             <Button
               variant="outline"
-              colorScheme="orange"
+              colorPalette="orange"
               onClick={onStartOver}
               leftIcon={<ArrowLeft size={16} />}
             >

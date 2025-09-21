@@ -1,5 +1,6 @@
-import { Card, Box, Text, VStack } from "@chakra-ui/react"
-import { Utensils, Wheat, Coffee, Beef, Zap, ChefHat } from "lucide-react"
+import { useState } from 'react'
+import { Card, Box, Text, VStack, Input, Button } from "@chakra-ui/react"
+import { Utensils, Wheat, Coffee, Beef, Zap, ChefHat, Plus } from "lucide-react"
 
 const styleOptions = [
   {
@@ -58,7 +59,31 @@ const styleOptions = [
   }
 ]
 
-export function StyleCards({ selectedStyle, onStyleChange }) {
+const toTitleCase = (str) => {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
+
+export function StyleCards({ selectedStyle, onStyleChange, customStyleName = '', onCustomStyleChange }) {
+  const [inputValue, setInputValue] = useState('')
+
+  const addCustomStyle = () => {
+    if (inputValue.trim()) {
+      const formattedStyle = toTitleCase(inputValue.trim())
+      onCustomStyleChange(formattedStyle)
+      setInputValue('')
+    }
+  }
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      addCustomStyle()
+    }
+  }
   return (
     <VStack spacing={4} align="stretch">
       <VStack spacing={2} align="start">
@@ -104,28 +129,78 @@ export function StyleCards({ selectedStyle, onStyleChange }) {
                 justifyContent="center"
                 p={4}
               >
-                <VStack spacing={2}>
-                  <IconComponent
-                    size={28}
-                    color={isSelected ? "white" : "var(--chakra-colors-neutral-600)"}
-                  />
-                  <Text
-                    fontSize="md"
-                    fontWeight="bold"
-                    color={isSelected ? "white" : "neutral.700"}
-                    textAlign="center"
-                  >
-                    {style.name}
-                  </Text>
-                  <Text
-                    fontSize="xs"
-                    color={isSelected ? "whiteAlpha.900" : "neutral.600"}
-                    textAlign="center"
-                    lineHeight={1.2}
-                  >
-                    {style.description}
-                  </Text>
-                </VStack>
+                {style.id === 'other' && isSelected ? (
+                  <VStack spacing={2} w="full">
+                    <IconComponent
+                      size={20}
+                      color="white"
+                    />
+                    <Text
+                      fontSize="sm"
+                      fontWeight="bold"
+                      color="white"
+                      textAlign="center"
+                    >
+                      {customStyleName || style.name}
+                    </Text>
+                    <Box position="relative" w="full">
+                      <Input
+                        placeholder="e.g., French, Thai..."
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        size="sm"
+                        bg="whiteAlpha.200"
+                        border="1px solid"
+                        borderColor="whiteAlpha.400"
+                        color="white"
+                        _placeholder={{ color: 'whiteAlpha.700' }}
+                        _focus={{ borderColor: "white", bg: "whiteAlpha.300" }}
+                        pr="2.5rem"
+                      />
+                      <Button
+                        onClick={addCustomStyle}
+                        position="absolute"
+                        right="2px"
+                        top="50%"
+                        transform="translateY(-50%)"
+                        size="xs"
+                        colorPalette="orange"
+                        variant="solid"
+                        disabled={!inputValue.trim()}
+                        borderRadius="sm"
+                        minW="auto"
+                        h="calc(100% - 4px)"
+                        px={1}
+                      >
+                        <Plus size={12} />
+                      </Button>
+                    </Box>
+                  </VStack>
+                ) : (
+                  <VStack spacing={2}>
+                    <IconComponent
+                      size={28}
+                      color={isSelected ? "white" : "var(--chakra-colors-neutral-600)"}
+                    />
+                    <Text
+                      fontSize="md"
+                      fontWeight="bold"
+                      color={isSelected ? "white" : "neutral.700"}
+                      textAlign="center"
+                    >
+                      {style.id === 'other' && customStyleName ? customStyleName : style.name}
+                    </Text>
+                    <Text
+                      fontSize="xs"
+                      color={isSelected ? "whiteAlpha.900" : "neutral.600"}
+                      textAlign="center"
+                      lineHeight={1.2}
+                    >
+                      {style.description}
+                    </Text>
+                  </VStack>
+                )}
 
                 {isSelected && (
                   <Box
