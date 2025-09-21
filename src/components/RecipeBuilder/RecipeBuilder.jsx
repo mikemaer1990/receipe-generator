@@ -8,7 +8,6 @@ import { StarchCards } from './StarchCards'
 import { ExtraIngredients } from './ExtraIngredients'
 import { StyleCards } from './StyleCards'
 import { PreferenceSelect } from './PreferenceSelect'
-import { AppBreadcrumb } from '../shared/Breadcrumb'
 import { storage } from '../../utils/localStorage'
 
 export function RecipeBuilder({ onGenerateRecipes, isLoading }) {
@@ -80,8 +79,6 @@ export function RecipeBuilder({ onGenerateRecipes, isLoading }) {
 
   return (
     <VStack spacing={8} align="stretch" maxW="4xl" mx="auto" pt={0} px={6} pb={6}>
-      {/* Breadcrumb Navigation */}
-      <AppBreadcrumb currentStep="builder" />
 
       {/* Reset Button */}
       <HStack justify="end">

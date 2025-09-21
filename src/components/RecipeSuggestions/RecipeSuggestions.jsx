@@ -4,7 +4,6 @@ import { ArrowLeft, RotateCcw } from "lucide-react"
 import { RecipeCard } from './RecipeCard'
 import { LoadingState } from '../shared/LoadingState'
 import { ErrorMessage } from '../shared/ErrorMessage'
-import { AppBreadcrumb } from '../shared/Breadcrumb'
 
 export function RecipeSuggestions({
   recipes = [],
@@ -76,11 +75,6 @@ export function RecipeSuggestions({
 
   return (
     <VStack spacing={8} align="stretch" maxW="4xl" mx="auto" pt={0} px={6} pb={6}>
-      {/* Breadcrumb Navigation */}
-      <AppBreadcrumb
-        currentStep="suggestions"
-        onNavigateToBuilder={onStartOver}
-      />
 
       {/* Navigation */}
       <HStack justify="space-between" align="center">

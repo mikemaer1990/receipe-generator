@@ -1,7 +1,7 @@
 import { Breadcrumb, Box } from "@chakra-ui/react"
 import { Home, ChefHat, BookOpen } from "lucide-react"
 
-export function AppBreadcrumb({ currentStep, onNavigateToBuilder, onNavigateToSuggestions, recipeName }) {
+export function AppBreadcrumb({ currentStep, onNavigateToBuilder, onNavigateToSuggestions, recipeName, headerStyle = false }) {
   const steps = [
     {
       key: 'builder',
@@ -42,8 +42,26 @@ export function AppBreadcrumb({ currentStep, onNavigateToBuilder, onNavigateToSu
     return null
   }
 
+  const containerStyle = headerStyle
+    ? { bg: 'transparent', borderRadius: 'md', p: 0, mb: 0 }
+    : { bg: 'neutral.100', borderRadius: 'md', p: 3, mb: 6 }
+
+  const textColors = headerStyle
+    ? {
+        current: 'white',
+        link: 'whiteAlpha.800',
+        linkHover: 'white',
+        separator: 'whiteAlpha.600'
+      }
+    : {
+        current: 'orange.600',
+        link: 'neutral.600',
+        linkHover: 'orange.600',
+        separator: 'neutral.400'
+      }
+
   return (
-    <Box bg="neutral.100" borderRadius="md" p={3} mb={6}>
+    <Box {...containerStyle}>
       <Breadcrumb.Root size="sm">
         <Breadcrumb.List gap={2}>
           {visibleSteps.map((step, index) => {
@@ -59,7 +77,7 @@ export function AppBreadcrumb({ currentStep, onNavigateToBuilder, onNavigateToSu
                       display="flex"
                       alignItems="center"
                       gap={2}
-                      color="orange.600"
+                      color={textColors.current}
                       fontWeight="semibold"
                     >
                       <Icon size={16} />
@@ -71,8 +89,8 @@ export function AppBreadcrumb({ currentStep, onNavigateToBuilder, onNavigateToSu
                       display="flex"
                       alignItems="center"
                       gap={2}
-                      color="neutral.600"
-                      _hover={{ color: "orange.600" }}
+                      color={textColors.link}
+                      _hover={{ color: textColors.linkHover }}
                       cursor="pointer"
                     >
                       <Icon size={16} />
@@ -80,7 +98,7 @@ export function AppBreadcrumb({ currentStep, onNavigateToBuilder, onNavigateToSu
                     </Breadcrumb.Link>
                   )}
                 </Breadcrumb.Item>
-                {!isLast && <Breadcrumb.Separator color="neutral.400" />}
+                {!isLast && <Breadcrumb.Separator color={textColors.separator} />}
               </div>
             )
           })}

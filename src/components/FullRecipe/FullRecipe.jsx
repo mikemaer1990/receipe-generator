@@ -6,7 +6,6 @@ import { IngredientsList } from './IngredientsList'
 import { Instructions } from './Instructions'
 import { LoadingState } from '../shared/LoadingState'
 import { ErrorMessage } from '../shared/ErrorMessage'
-import { AppBreadcrumb } from '../shared/Breadcrumb'
 
 export function FullRecipe({
   recipe,
@@ -70,13 +69,6 @@ export function FullRecipe({
 
   return (
     <VStack spacing={8} align="stretch" maxW="4xl" mx="auto" p={6}>
-      {/* Breadcrumb Navigation */}
-      <AppBreadcrumb
-        currentStep="recipe"
-        onNavigateToBuilder={onGenerateNew}
-        onNavigateToSuggestions={onTryDifferent}
-        recipeName={recipe?.title}
-      />
 
       {/* Recipe Header */}
       <Box
