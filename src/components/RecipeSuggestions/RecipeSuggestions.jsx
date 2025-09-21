@@ -133,7 +133,6 @@ export function RecipeSuggestions({
             <RecipeCard
               key={index}
               recipe={recipe}
-              index={index}
               onSelect={onRecipeSelect}
               isLoading={false}
             />

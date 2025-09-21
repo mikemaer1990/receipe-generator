@@ -2,7 +2,7 @@ import { Card, Text, Button, VStack, HStack, Badge, Box, Tooltip } from "@chakra
 import { ChefHat, Clock, Star, Utensils, ChevronDown, ChevronUp } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 
-export function RecipeCard({ recipe, onSelect, isLoading, index = 0 }) {
+export function RecipeCard({ recipe, onSelect, isLoading }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isTruncated, setIsTruncated] = useState(false)
   const textRef = useRef(null)
@@ -16,29 +16,13 @@ export function RecipeCard({ recipe, onSelect, isLoading, index = 0 }) {
     }
   }, [recipe.title])
 
-  // Generate varied metadata based on index to ensure variety
-  const getMetadata = (index) => {
-    const prepTimes = ["15 mins", "25 mins", "35 mins", "45 mins", "30 mins"];
-    const difficulties = ["Easy", "Medium", "Hard"];
-    const cuisines = ["Italian", "Mediterranean", "Asian", "Mexican", "American", "French", "Indian"];
-    const dietaryOptions = [
-      [],
-      ["vegetarian"],
-      ["gluten-free"],
-      ["vegan"],
-      ["vegetarian", "gluten-free"],
-      ["dairy-free"]
-    ];
-
-    return {
-      prepTime: prepTimes[index % prepTimes.length],
-      difficulty: difficulties[index % difficulties.length],
-      cuisine: cuisines[index % cuisines.length],
-      dietary: dietaryOptions[index % dietaryOptions.length]
-    }
+  // Use real metadata from recipe object with fallbacks
+  const metadata = recipe.metadata || {
+    prepTime: "25 mins",
+    difficulty: "Medium",
+    cuisine: "American",
+    dietary: []
   }
-
-  const metadata = getMetadata(index)
 
   const getDifficultyColor = (difficulty) => {
     switch (difficulty.toLowerCase()) {

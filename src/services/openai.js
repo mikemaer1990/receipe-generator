@@ -106,16 +106,23 @@ ${preference ? `- Preference: ${preference}` : ''}
 For each recipe, provide:
 1. A creative recipe title
 2. A brief 1-2 sentence description
+3. Accurate metadata based on the actual recipe requirements
 
-Format as:
-**Recipe 1:** [Title]
-[Description]
+Format as JSON:
+[
+  {
+    "title": "[Recipe Title]",
+    "description": "[Brief description]",
+    "metadata": {
+      "prepTime": "[Realistic time like '25 mins' or '1 hour']",
+      "difficulty": "[Easy/Medium/Hard based on cooking complexity]",
+      "cuisine": "[Primary cuisine style like 'Italian', 'Asian', 'Mediterranean']",
+      "dietary": ["[Array of dietary restrictions like 'vegetarian', 'gluten-free', 'dairy-free' or empty array]"]
+    }
+  }
+]
 
-**Recipe 2:** [Title]
-[Description]
-
-**Recipe 3:** [Title]
-[Description]`
+Base the metadata on the actual recipe requirements, not arbitrary assignment. Return only valid JSON.`
 
   try {
     const response = await openaiClient.post('/chat/completions', {
@@ -200,7 +207,48 @@ Format the response clearly with these exact section headers.`
   }
 }
 
+function getDefaultMetadata() {
+  return {
+    prepTime: "25 mins",
+    difficulty: "Medium",
+    cuisine: "American",
+    dietary: []
+  }
+}
+
+function validateMetadata(metadata) {
+  const validDifficulties = ['Easy', 'Medium', 'Hard']
+  const validTimePattern = /^\d+\s+(mins?|minutes?|hours?|hrs?)$/i
+
+  return {
+    prepTime: (metadata.prepTime && validTimePattern.test(metadata.prepTime)) ? metadata.prepTime : "25 mins",
+    difficulty: validDifficulties.includes(metadata.difficulty) ? metadata.difficulty : "Medium",
+    cuisine: metadata.cuisine || "American",
+    dietary: Array.isArray(metadata.dietary) ? metadata.dietary : []
+  }
+}
+
+function validateRecipe(recipe) {
+  return {
+    title: recipe.title || "Untitled Recipe",
+    description: recipe.description || "A delicious recipe",
+    metadata: validateMetadata(recipe.metadata || {})
+  }
+}
+
 function parseRecipeSuggestions(content) {
+  try {
+    // Try to parse as JSON first
+    const jsonMatch = content.match(/\[[\s\S]*\]/)
+    if (jsonMatch) {
+      const recipes = JSON.parse(jsonMatch[0])
+      return recipes.map(recipe => validateRecipe(recipe)).slice(0, 3)
+    }
+  } catch (error) {
+    console.warn('Failed to parse JSON response, falling back to regex parsing')
+  }
+
+  // Fallback to original parsing method
   const recipes = []
   const recipePattern = /\*\*Recipe \d+:\*\*\s*([^\n]+)\n([^\n]+(?:\n[^*]+)*)/g
 
@@ -208,18 +256,20 @@ function parseRecipeSuggestions(content) {
   while ((match = recipePattern.exec(content)) !== null) {
     recipes.push({
       title: match[1].trim(),
-      description: match[2].trim()
+      description: match[2].trim(),
+      metadata: getDefaultMetadata()
     })
   }
 
-  // Fallback parsing if regex doesn't work
+  // Secondary fallback parsing
   if (recipes.length === 0) {
     const lines = content.split('\n').filter(line => line.trim())
     for (let i = 0; i < lines.length - 1; i += 2) {
       if (lines[i].includes('Recipe') && lines[i + 1]) {
         recipes.push({
           title: lines[i].replace(/\*\*Recipe \d+:\*\*\s*/, '').trim(),
-          description: lines[i + 1].trim()
+          description: lines[i + 1].trim(),
+          metadata: getDefaultMetadata()
         })
       }
     }
