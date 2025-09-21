@@ -128,7 +128,7 @@ export function RecipeSuggestions({
 
       {/* Recipe Cards */}
       <Box bg="white" borderWidth="1px" borderColor="neutral.200" borderRadius="lg" p={6}>
-        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
+        <SimpleGrid columns={{ base: 1, md: 3 }} gap={8}>
           {recipes.map((recipe, index) => (
             <RecipeCard
               key={index}

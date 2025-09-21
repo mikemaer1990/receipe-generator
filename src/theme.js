@@ -2,7 +2,19 @@ import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react"
 
 const customConfig = defineConfig({
   theme: {
+    keyframes: {
+      hatToss: {
+        "0%": { transform: "translateY(0px) rotateZ(0deg)" },
+        "25%": { transform: "translateY(-10px) rotateZ(90deg)" },
+        "50%": { transform: "translateY(-12px) rotateZ(180deg)" },
+        "75%": { transform: "translateY(-10px) rotateZ(270deg)" },
+        "100%": { transform: "translateY(0px) rotateZ(360deg)" }
+      }
+    },
     tokens: {
+      animations: {
+        hatToss: { value: "hatToss 0.8s ease-in-out" }
+      },
       colors: {
         // Food-themed color palette from spec
         primary: {

@@ -77,7 +77,7 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
       <Box
         bg={`${getCuisineColor(metadata.cuisine)}.50`}
         borderTopRadius="lg"
-        h="100px"
+        h="60px"
         p={4}
         borderBottomWidth="1px"
         borderBottomColor="neutral.200"
@@ -85,7 +85,7 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
         alignItems="center"
       >
         <HStack justify="space-between" align="center" w="full" h="full">
-{isTruncated ? (
+          {isTruncated ? (
             <Tooltip.Root positioning={{ placement: "top" }}>
               <Tooltip.Trigger asChild>
                 <Text
@@ -94,7 +94,7 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
                   fontWeight="bold"
                   color="neutral.800"
                   lineHeight={1.3}
-                  noOfLines={3}
+                  noOfLines={2}
                   flex={1}
                   mr={2}
                   overflow="hidden"
@@ -103,7 +103,7 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
                   display="-webkit-box"
                   cursor="help"
                   css={{
-                    WebkitLineClamp: 3,
+                    WebkitLineClamp: 2,
                     WebkitBoxOrient: "vertical"
                   }}
                 >
@@ -131,7 +131,7 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
               fontWeight="bold"
               color="neutral.800"
               lineHeight={1.3}
-              noOfLines={3}
+              noOfLines={2}
               flex={1}
               mr={2}
               overflow="hidden"
@@ -139,7 +139,7 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
               wordBreak="break-word"
               display="-webkit-box"
               css={{
-                WebkitLineClamp: 3,
+                WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical"
               }}
             >
@@ -151,8 +151,7 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
             colorPalette={getCuisineColor(metadata.cuisine)}
             size="sm"
             flexShrink={0}
-            alignSelf="flex-start"
-            mt={1}
+            alignSelf="center"
           >
             {metadata.cuisine}
           </Badge>
@@ -268,17 +267,19 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
           size="md"
           colorPalette="orange"
           w="full"
-          leftIcon={<ChefHat size={16} />}
           onClick={(e) => {
             e.stopPropagation()
             onSelect(recipe)
           }}
           disabled={isLoading}
           _hover={{
-            transform: "scale(0.98)"
+            "& svg": {
+              animation: "hatToss"
+            }
           }}
-          transition="all 0.1s"
+          transition="all 0.2s ease"
         >
+          <ChefHat size={16} />
           Select Recipe
         </Button>
       </Box>
