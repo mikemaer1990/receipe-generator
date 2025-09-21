@@ -8,6 +8,7 @@ import { StarchCards } from './StarchCards'
 import { ExtraIngredients } from './ExtraIngredients'
 import { StyleCards } from './StyleCards'
 import { PreferenceSelect } from './PreferenceSelect'
+import { AppBreadcrumb } from '../shared/Breadcrumb'
 import { storage } from '../../utils/localStorage'
 
 export function RecipeBuilder({ onGenerateRecipes, isLoading }) {
@@ -79,27 +80,8 @@ export function RecipeBuilder({ onGenerateRecipes, isLoading }) {
 
   return (
     <VStack spacing={8} align="stretch" maxW="4xl" mx="auto" pt={0} px={6} pb={6}>
-      {/* Features Bar */}
-      <Box bg="white" borderWidth="1px" borderColor="neutral.200" borderRadius="lg" p={4}>
-        <HStack spacing={8} justify="center" wrap="wrap">
-          <HStack spacing={2}>
-            <Box w={2} h={2} bg="success.500" borderRadius="full" />
-            <Text fontSize="sm" color="neutral.600">AI-Powered Recipes</Text>
-          </HStack>
-          <HStack spacing={2}>
-            <Box w={2} h={2} bg="primary.500" borderRadius="full" />
-            <Text fontSize="sm" color="neutral.600">Custom Ingredients</Text>
-          </HStack>
-          <HStack spacing={2}>
-            <Box w={2} h={2} bg="secondary.500" borderRadius="full" />
-            <Text fontSize="sm" color="neutral.600">Nutrition Info</Text>
-          </HStack>
-          <HStack spacing={2}>
-            <Box w={2} h={2} bg="accent.500" borderRadius="full" />
-            <Text fontSize="sm" color="neutral.600">Multiple Styles</Text>
-          </HStack>
-        </HStack>
-      </Box>
+      {/* Breadcrumb Navigation */}
+      <AppBreadcrumb currentStep="builder" />
 
       {/* Reset Button */}
       <HStack justify="end">

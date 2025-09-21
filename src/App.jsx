@@ -140,9 +140,6 @@ function App() {
                 Recipe Generator
               </Heading>
             </Box>
-            <Text fontSize="xl" color="whiteAlpha.900" maxW="2xl" textAlign="center">
-              Create personalized recipes using AI based on your ingredients and preferences
-            </Text>
           </VStack>
         </Container>
       </Box>

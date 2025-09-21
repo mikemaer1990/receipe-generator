@@ -1,9 +1,10 @@
 import { VStack, HStack, Button, Text, SimpleGrid, Heading, Box } from "@chakra-ui/react"
-import { ArrowLeft, RotateCcw, ChevronRight, Home, ChefHat } from "lucide-react"
+import { ArrowLeft, RotateCcw } from "lucide-react"
 
 import { RecipeCard } from './RecipeCard'
 import { LoadingState } from '../shared/LoadingState'
 import { ErrorMessage } from '../shared/ErrorMessage'
+import { AppBreadcrumb } from '../shared/Breadcrumb'
 
 export function RecipeSuggestions({
   recipes = [],
@@ -76,21 +77,10 @@ export function RecipeSuggestions({
   return (
     <VStack spacing={8} align="stretch" maxW="4xl" mx="auto" pt={0} px={6} pb={6}>
       {/* Breadcrumb Navigation */}
-      <Box bg="white" borderWidth="1px" borderColor="neutral.200" borderRadius="lg" p={4}>
-        <HStack spacing={2} fontSize="sm" color="neutral.600">
-          <HStack spacing={1}>
-            <Home size={16} />
-            <Text>Recipe Builder</Text>
-          </HStack>
-          <ChevronRight size={14} />
-          <HStack spacing={1} color="orange.600" fontWeight="semibold">
-            <ChefHat size={16} />
-            <Text>Choose Recipe</Text>
-          </HStack>
-          <ChevronRight size={14} />
-          <Text color="neutral.400">Full Recipe</Text>
-        </HStack>
-      </Box>
+      <AppBreadcrumb
+        currentStep="suggestions"
+        onNavigateToBuilder={onStartOver}
+      />
 
       {/* Navigation */}
       <HStack justify="space-between" align="center">
