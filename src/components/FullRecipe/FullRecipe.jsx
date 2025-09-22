@@ -18,7 +18,7 @@ export function FullRecipe({
 }) {
   if (isLoading) {
     return (
-      <VStack spacing={8} align="stretch" maxW="4xl" mx="auto" p={6}>
+      <VStack spacing={{ base: 6, md: 8 }} align="stretch" maxW="4xl" mx="auto" p={{ base: 4, md: 6 }}>
         <VStack spacing={4} textAlign="center">
           <Heading size="xl" color="neutral.700">
             Creating Your Recipe...
@@ -35,7 +35,7 @@ export function FullRecipe({
 
   if (error) {
     return (
-      <VStack spacing={8} align="stretch" maxW="4xl" mx="auto" p={6}>
+      <VStack spacing={{ base: 6, md: 8 }} align="stretch" maxW="4xl" mx="auto" p={{ base: 4, md: 6 }}>
         <ErrorMessage
           title="Failed to Load Recipe"
           message={error.message || "Something went wrong while loading your recipe."}
@@ -68,13 +68,13 @@ export function FullRecipe({
   }
 
   return (
-    <VStack spacing={8} align="stretch" maxW="4xl" mx="auto" p={6}>
+    <VStack spacing={{ base: 6, md: 8 }} align="stretch" maxW="4xl" mx="auto" p={{ base: 4, md: 6 }}>
 
       {/* Recipe Header */}
       <Box
         bg="linear-gradient(135deg, #FF8C42 0%, #D2001F 100%)"
         color="white"
-        p={8}
+        p={{ base: 4, sm: 6, md: 8 }}
         borderRadius="xl"
         textAlign="center"
         position="relative"
@@ -102,7 +102,7 @@ export function FullRecipe({
         />
 
         <VStack spacing={4} position="relative" zIndex={1}>
-          <Heading size="2xl" textAlign="center" lineHeight={1.2}>
+          <Heading size={{ base: "xl", md: "2xl" }} textAlign="center" lineHeight={1.2}>
             {recipe.title}
           </Heading>
 
@@ -151,12 +151,15 @@ export function FullRecipe({
 
       {/* Action Buttons */}
       <VStack spacing={4} pt={4}>
-        <HStack spacing={4} justify="center" wrap="wrap">
+        <VStack spacing={{ base: 3, md: 0 }} w="full">
+          <HStack spacing={{ base: 2, md: 4 }} justify="center" wrap="wrap" w="full">
           <Button
             size="lg"
             colorScheme="orange"
             leftIcon={<Sparkles size={20} />}
             onClick={onGenerateNew}
+            minH="48px"
+            w={{ base: "full", md: "auto" }}
             _hover={{
               transform: "translateY(-2px)",
               boxShadow: "lg"
@@ -172,6 +175,8 @@ export function FullRecipe({
             colorScheme="orange"
             leftIcon={<RotateCcw size={20} />}
             onClick={onTryDifferent}
+            minH="48px"
+            w={{ base: "full", md: "auto" }}
             _hover={{
               transform: "translateY(-2px)",
               boxShadow: "lg"
@@ -180,17 +185,20 @@ export function FullRecipe({
           >
             Try Different Options
           </Button>
-        </HStack>
+          </HStack>
 
-        <Button
-          variant="ghost"
-          colorScheme="orange"
-          size="sm"
-          leftIcon={<ArrowLeft size={16} />}
-          onClick={onTryDifferent}
-        >
-          Back to Recipe Builder
-        </Button>
+          <Button
+            variant="ghost"
+            colorScheme="orange"
+            size="sm"
+            leftIcon={<ArrowLeft size={16} />}
+            onClick={onTryDifferent}
+            minH="44px"
+            w={{ base: "full", md: "auto" }}
+          >
+            Back to Recipe Builder
+          </Button>
+        </VStack>
       </VStack>
     </VStack>
   )

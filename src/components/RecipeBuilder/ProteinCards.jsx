@@ -207,12 +207,10 @@ export function ProteinCards({ selectedProtein, proteinAmount = 300, customProte
         Choose Your Protein
       </Text>
 
-      <HStack
-        spacing={3}
-        flexWrap="wrap"
-        justify="flex-start"
+      <SimpleGrid
+        columns={{ base: 3, sm: 3, md: 4, lg: 6 }}
+        gap={{ base: 4, md: 5 }}
         py={2}
-        px={2}
       >
         {proteinOptions.map((protein) => {
           const IconComponent = protein.icon
@@ -225,8 +223,8 @@ export function ProteinCards({ selectedProtein, proteinAmount = 300, customProte
               key={protein.id}
               onClick={protein.id === 'chicken' && chickenSplitState === 'split' ? undefined : () => handleProteinClick(protein.id)}
               cursor={protein.id === 'chicken' && chickenSplitState === 'split' ? "default" : "pointer"}
-              minW="100px"
-              h="100px"
+              minW={{ base: "90px", md: "100px" }}
+              h={{ base: "100px", md: "100px" }}
               bg={isSelected ?
                 (protein.id === 'turkey' ? 'linear-gradient(135deg, #b7791f, #744210)' :
                  protein.id === 'salmon' ? 'linear-gradient(135deg, #e53e3e, #c53030)' :
@@ -303,7 +301,7 @@ export function ProteinCards({ selectedProtein, proteinAmount = 300, customProte
             </Card.Root>
           )
         })}
-      </HStack>
+      </SimpleGrid>
 
 
       <Text fontSize="sm" color="neutral.600">

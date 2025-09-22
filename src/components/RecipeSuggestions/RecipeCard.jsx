@@ -77,7 +77,7 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
       <Box
         bg={`${getCuisineColor(metadata.cuisine)}.50`}
         borderTopRadius="lg"
-        h="60px"
+        h={{ base: "52px", md: "60px" }}
         p={4}
         borderBottomWidth="1px"
         borderBottomColor="neutral.200"
@@ -236,7 +236,7 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
             {recipe.description && recipe.description.length > 100 && (
               <Button
                 variant="ghost"
-                size="xs"
+                size={{ base: "sm", md: "xs" }}
                 colorPalette="orange"
                 onClick={(e) => {
                   e.stopPropagation()
@@ -246,7 +246,7 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
                 mt={1}
                 p={1}
                 h="auto"
-                minH="auto"
+                minH="44px"
                 fontSize="xs"
               >
                 {isExpanded ? "Less" : "More"}
@@ -264,9 +264,11 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
         bg="neutral.25"
       >
         <Button
-          size="md"
+          size={{ base: "lg", md: "md" }}
           colorPalette="orange"
           w="full"
+          minH="44px"
+          fontSize={{ base: "md", md: "sm" }}
           onClick={(e) => {
             e.stopPropagation()
             onSelect(recipe)

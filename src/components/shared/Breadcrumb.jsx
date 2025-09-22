@@ -1,23 +1,26 @@
-import { Breadcrumb, Box } from "@chakra-ui/react"
+import { Breadcrumb, Box, useBreakpointValue } from "@chakra-ui/react"
 import { Home, ChefHat, BookOpen } from "lucide-react"
 
 export function AppBreadcrumb({ currentStep, onNavigateToBuilder, onNavigateToSuggestions, recipeName, headerStyle = false }) {
+  const isMobile = useBreakpointValue({ base: true, md: false })
+  const iconSize = useBreakpointValue({ base: 14, md: 16 })
+  const breadcrumbSize = useBreakpointValue({ base: "xs", md: "sm" })
   const steps = [
     {
       key: 'builder',
-      label: 'Recipe Builder',
+      label: isMobile ? 'Builder' : 'Recipe Builder',
       icon: Home,
       onClick: onNavigateToBuilder
     },
     {
       key: 'suggestions',
-      label: 'Choose Recipe',
+      label: isMobile ? 'Recipes' : 'Choose Recipe',
       icon: ChefHat,
       onClick: onNavigateToSuggestions
     },
     {
       key: 'recipe',
-      label: recipeName || 'Full Recipe',
+      label: isMobile && recipeName?.length > 15 ? `${recipeName.slice(0, 15)}...` : (recipeName || 'Full Recipe'),
       icon: BookOpen,
       onClick: null
     }
@@ -44,7 +47,7 @@ export function AppBreadcrumb({ currentStep, onNavigateToBuilder, onNavigateToSu
 
   const containerStyle = headerStyle
     ? { bg: 'transparent', borderRadius: 'md', p: 0, mb: 0 }
-    : { bg: 'neutral.100', borderRadius: 'md', p: 3, mb: 6 }
+    : { bg: 'neutral.100', borderRadius: 'md', p: { base: 2, md: 3 }, mb: { base: 4, md: 6 } }
 
   const textColors = headerStyle
     ? {
@@ -62,8 +65,8 @@ export function AppBreadcrumb({ currentStep, onNavigateToBuilder, onNavigateToSu
 
   return (
     <Box {...containerStyle}>
-      <Breadcrumb.Root size="sm">
-        <Breadcrumb.List gap={2}>
+      <Breadcrumb.Root size={breadcrumbSize}>
+        <Breadcrumb.List gap={{ base: 1, md: 2 }}>
           {visibleSteps.map((step, index) => {
             const Icon = step.icon
             const isLast = index === visibleSteps.length - 1
@@ -76,11 +79,12 @@ export function AppBreadcrumb({ currentStep, onNavigateToBuilder, onNavigateToSu
                     <Breadcrumb.CurrentLink
                       display="flex"
                       alignItems="center"
-                      gap={2}
+                      gap={{ base: 1, md: 2 }}
                       color={textColors.current}
                       fontWeight="semibold"
+                      fontSize={{ base: "xs", md: "sm" }}
                     >
-                      <Icon size={16} />
+                      <Icon size={iconSize} />
                       {step.label}
                     </Breadcrumb.CurrentLink>
                   ) : (
@@ -88,12 +92,14 @@ export function AppBreadcrumb({ currentStep, onNavigateToBuilder, onNavigateToSu
                       onClick={step.onClick}
                       display="flex"
                       alignItems="center"
-                      gap={2}
+                      gap={{ base: 1, md: 2 }}
                       color={textColors.link}
                       _hover={{ color: textColors.linkHover }}
                       cursor="pointer"
+                      fontSize={{ base: "xs", md: "sm" }}
+                      minH="44px"
                     >
-                      <Icon size={16} />
+                      <Icon size={iconSize} />
                       {step.label}
                     </Breadcrumb.Link>
                   )}

@@ -1,4 +1,4 @@
-import { HStack, Card, Box, Text, VStack, Input, Button } from "@chakra-ui/react"
+import { SimpleGrid, HStack, Card, Box, Text, VStack, Input, Button } from "@chakra-ui/react"
 import { Wheat, Beef, Cookie, X, Plus } from "lucide-react"
 
 const starchOptions = [
@@ -55,23 +55,10 @@ export function StarchCards({ selectedStarch, customStarchName = '', onStarchCha
         Choose Your Starch
       </Text>
 
-      <HStack
-        spacing={3}
-        overflowX="auto"
+      <SimpleGrid
+        columns={{ base: 3, sm: 3, md: 4, lg: 6 }}
+        gap={{ base: 4, md: 5 }}
         py={2}
-        px={2}
-        sx={{
-          '&::-webkit-scrollbar': {
-            height: '4px',
-          },
-          '&::-webkit-scrollbar-track': {
-            background: 'neutral.100',
-          },
-          '&::-webkit-scrollbar-thumb': {
-            background: 'primary.300',
-            borderRadius: '2px',
-          },
-        }}
       >
         {starchOptions.map((starch) => {
           const IconComponent = starch.icon
@@ -82,8 +69,8 @@ export function StarchCards({ selectedStarch, customStarchName = '', onStarchCha
               key={starch.id}
               onClick={() => onStarchChange(starch.id)}
               cursor="pointer"
-              minW="100px"
-              h="100px"
+              minW={{ base: "90px", md: "100px" }}
+              h={{ base: "100px", md: "100px" }}
               bg={isSelected ?
                 (starch.id === 'rice' ? 'linear-gradient(135deg, #38a169, #2f855a)' :
                  starch.id === 'potato' ? 'linear-gradient(135deg, #b7791f, #744210)' :
@@ -142,7 +129,7 @@ export function StarchCards({ selectedStarch, customStarchName = '', onStarchCha
             </Card.Root>
           )
         })}
-      </HStack>
+      </SimpleGrid>
 
       <Text fontSize="sm" color="neutral.600">
         Select a starch base for your recipe, choose no starch for low-carb, or specify your own

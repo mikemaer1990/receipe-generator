@@ -95,7 +95,7 @@ function App() {
       <Box
         bg="linear-gradient(135deg, #FF8C42 0%, #D2001F 100%)"
         color="white"
-        py={8}
+        py={{ base: 4, md: 8 }}
         textAlign="center"
         position="relative"
         overflow="hidden"
@@ -157,7 +157,7 @@ function App() {
           <Coffee size={24} />
         </Box>
 
-        <Container maxW="6xl" position="relative" zIndex={1}>
+        <Container maxW={{ base: "full", sm: "6xl" }} px={{ base: 4, md: 0 }} position="relative" zIndex={1}>
           <VStack spacing={6}>
             {/* Enhanced title section with cooking theme */}
             <VStack spacing={2}>
@@ -225,7 +225,7 @@ function App() {
                 mt={2}
               >
                 <AppBreadcrumb
-                  currentStep={appState}
+                  currentStep={appState === APP_STATES.FULL_RECIPE ? 'recipe' : appState}
                   onNavigateToBuilder={handleGenerateNew}
                   onNavigateToSuggestions={handleTryDifferent}
                   recipeName={fullRecipe?.title}
@@ -238,7 +238,7 @@ function App() {
       </Box>
 
       {/* Main Content */}
-      <Container maxW="6xl" py={4} flex={1} display="flex" flexDirection="column">
+      <Container maxW={{ base: "full", sm: "6xl" }} py={4} px={{ base: 4, md: 0 }} flex={1} display="flex" flexDirection="column">
         {appState === APP_STATES.BUILDER && (
           <RecipeBuilder
             onGenerateRecipes={handleGenerateRecipes}

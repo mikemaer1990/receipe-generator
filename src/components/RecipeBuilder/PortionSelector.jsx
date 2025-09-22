@@ -1,4 +1,4 @@
-import { HStack, Card, Box, Text, VStack } from "@chakra-ui/react"
+import { SimpleGrid, HStack, Card, Box, Text, VStack } from "@chakra-ui/react"
 import { Users, User, UserPlus } from "lucide-react"
 
 const portionOptions = [
@@ -65,23 +65,10 @@ export function PortionSelector({ value = 2, onChange }) {
         Choose Portion Size
       </Text>
 
-      <HStack
-        spacing={3}
-        overflowX="auto"
+      <SimpleGrid
+        columns={{ base: 3, sm: 4, md: 6 }}
+        gap={{ base: 4, md: 5 }}
         py={2}
-        px={2}
-        sx={{
-          '&::-webkit-scrollbar': {
-            height: '4px',
-          },
-          '&::-webkit-scrollbar-track': {
-            background: 'neutral.100',
-          },
-          '&::-webkit-scrollbar-thumb': {
-            background: 'primary.300',
-            borderRadius: '2px',
-          },
-        }}
       >
         {portionOptions.map((portion) => {
           const IconComponent = portion.icon
@@ -92,8 +79,8 @@ export function PortionSelector({ value = 2, onChange }) {
               key={portion.id}
               onClick={() => onChange(portion.value)}
               cursor="pointer"
-              minW="100px"
-              h="100px"
+              minW={{ base: "90px", md: "100px" }}
+              h={{ base: "100px", md: "100px" }}
               bg={isSelected ?
                 'linear-gradient(135deg, #dd6b20, #c05621)'
                 : 'linear-gradient(135deg, #fffaf7, #f7f5f3)'
@@ -153,7 +140,7 @@ export function PortionSelector({ value = 2, onChange }) {
             </Card.Root>
           )
         })}
-      </HStack>
+      </SimpleGrid>
 
       <Text fontSize="sm" color="neutral.600">
         Select the number of portions for your recipe (1-6 people)

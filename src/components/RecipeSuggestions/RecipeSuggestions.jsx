@@ -17,7 +17,7 @@ export function RecipeSuggestions({
 }) {
   if (isLoading) {
     return (
-      <VStack spacing={8} align="stretch" maxW="4xl" mx="auto" pt={0} px={6} pb={6}>
+      <VStack spacing={{ base: 6, md: 8 }} align="stretch" maxW="4xl" mx="auto" pt={0} px={{ base: 4, md: 6 }} pb={{ base: 4, md: 6 }}>
         <VStack spacing={4} textAlign="center">
           <Heading size="xl" color="neutral.700">
             Cooking Up Something Special...
@@ -34,7 +34,7 @@ export function RecipeSuggestions({
 
   if (error) {
     return (
-      <VStack spacing={8} align="stretch" maxW="4xl" mx="auto" pt={0} px={6} pb={6}>
+      <VStack spacing={{ base: 6, md: 8 }} align="stretch" maxW="4xl" mx="auto" pt={0} px={{ base: 4, md: 6 }} pb={{ base: 4, md: 6 }}>
         <ErrorMessage
           title="Failed to Generate Recipes"
           message={error.message || "Something went wrong while generating your recipes."}
@@ -74,16 +74,17 @@ export function RecipeSuggestions({
   }
 
   return (
-    <VStack spacing={8} align="stretch" maxW="4xl" mx="auto" pt={0} px={6} pb={6}>
+    <VStack spacing={{ base: 6, md: 8 }} align="stretch" maxW="4xl" mx="auto" pt={0} px={{ base: 4, md: 6 }} pb={{ base: 4, md: 6 }}>
 
       {/* Navigation */}
       <HStack justify="space-between" align="center">
         <Button
           variant="ghost"
           colorPalette="orange"
-          size="sm"
+          size={{ base: "md", md: "sm" }}
           leftIcon={<ArrowLeft size={16} />}
           onClick={onStartOver}
+          minH="44px"
         >
           Start Over
         </Button>
@@ -91,9 +92,10 @@ export function RecipeSuggestions({
         <Button
           variant="ghost"
           colorPalette="orange"
-          size="sm"
+          size={{ base: "md", md: "sm" }}
           leftIcon={<RotateCcw size={16} />}
           onClick={onTryAgain}
+          minH="44px"
         >
           Try Again
         </Button>
@@ -111,8 +113,8 @@ export function RecipeSuggestions({
       </VStack>
 
       {/* Recipe Cards */}
-      <Box bg="white" borderWidth="1px" borderColor="neutral.200" borderRadius="lg" p={6}>
-        <SimpleGrid columns={{ base: 1, md: 3 }} gap={8}>
+      <Box bg="white" borderWidth="1px" borderColor="neutral.200" borderRadius="lg" p={{ base: 4, md: 6 }}>
+        <SimpleGrid columns={{ base: 1, md: 3 }} gap={{ base: 4, md: 8 }}>
           {recipes.map((recipe, index) => (
             <RecipeCard
               key={index}

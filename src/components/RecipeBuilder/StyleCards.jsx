@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Card, Box, Text, VStack, Input, Button } from "@chakra-ui/react"
+import { SimpleGrid, Card, Box, Text, VStack, Input, Button } from "@chakra-ui/react"
 import { Utensils, Wheat, Coffee, Beef, Zap, ChefHat, Plus } from "lucide-react"
 
 const styleOptions = [
@@ -95,11 +95,10 @@ export function StyleCards({ selectedStyle, onStyleChange, customStyleName = '',
         </Text>
       </VStack>
 
-      <Box
-        display="grid"
-        gridTemplateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }}
-        gap={4}
-        p={2}
+      <SimpleGrid
+        columns={{ base: 2, sm: 3, md: 3, lg: 3 }}
+        gap={{ base: 4, md: 5 }}
+        py={2}
       >
         {styleOptions.map((style) => {
           const IconComponent = style.icon
@@ -110,7 +109,7 @@ export function StyleCards({ selectedStyle, onStyleChange, customStyleName = '',
               key={style.id}
               onClick={() => onStyleChange(style.id)}
               cursor="pointer"
-              h="120px"
+              h={{ base: "140px", md: "120px" }}
               bg={isSelected ? style.selectedBg : 'linear-gradient(135deg, #fffaf7, #f7f5f3)'}
               borderWidth="2px"
               borderColor={isSelected ? `${style.color}.500` : "neutral.200"}
@@ -219,7 +218,7 @@ export function StyleCards({ selectedStyle, onStyleChange, customStyleName = '',
             </Card.Root>
           )
         })}
-      </Box>
+      </SimpleGrid>
     </VStack>
   )
 }

@@ -78,7 +78,7 @@ export function RecipeBuilder({ onGenerateRecipes, isLoading }) {
     (formData.protein !== 'other' || (formData.protein === 'other' && formData.customProteinName.trim()))
 
   return (
-    <VStack spacing={8} align="stretch" maxW="4xl" mx="auto" pt={0} px={6} pb={6}>
+    <VStack spacing={{ base: 6, md: 8 }} align="stretch" maxW="4xl" mx="auto" pt={0} px={{ base: 2, md: 6 }} pb={{ base: 4, md: 6 }}>
 
       {/* Reset Button */}
       <HStack justify="end">
@@ -94,7 +94,7 @@ export function RecipeBuilder({ onGenerateRecipes, isLoading }) {
       </HStack>
 
       {/* Form Sections */}
-      <VStack spacing={8} align="stretch">
+      <VStack spacing={{ base: 6, md: 8 }} align="stretch">
         <PortionSelector
           value={formData.portions}
           onChange={(value) => updateFormData('portions', value)}
@@ -151,6 +151,7 @@ export function RecipeBuilder({ onGenerateRecipes, isLoading }) {
           colorPalette="orange"
           w={{ base: "full", md: "auto" }}
           minW={{ md: "300px" }}
+          minH="48px"
           mx="auto"
           display="block"
           onClick={handleGenerate}
