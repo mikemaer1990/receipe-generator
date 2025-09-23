@@ -1,5 +1,4 @@
-import { VStack, HStack, Button, Text, SimpleGrid, Heading, Box } from "@chakra-ui/react"
-import { ArrowLeft, RotateCcw } from "lucide-react"
+import { VStack, Text, SimpleGrid, Heading, Box } from "@chakra-ui/react"
 
 import { RecipeCard } from './RecipeCard'
 import { LoadingState } from '../shared/LoadingState'
@@ -11,8 +10,6 @@ export function RecipeSuggestions({
   error,
   formData,
   onRecipeSelect,
-  onStartOver,
-  onTryAgain,
   onRetry
 }) {
   if (isLoading) {
@@ -41,24 +38,6 @@ export function RecipeSuggestions({
           onRetry={onRetry}
         />
 
-        <HStack justify="center" spacing={4}>
-          <Button
-            variant="ghost"
-            colorPalette="orange"
-            leftIcon={<ArrowLeft size={16} />}
-            onClick={onStartOver}
-          >
-            Start Over
-          </Button>
-          <Button
-            variant="outline"
-            colorPalette="orange"
-            leftIcon={<RotateCcw size={16} />}
-            onClick={onTryAgain}
-          >
-            Try Again
-          </Button>
-        </HStack>
       </VStack>
     )
   }
@@ -75,31 +54,6 @@ export function RecipeSuggestions({
 
   return (
     <VStack spacing={{ base: 6, md: 8 }} align="stretch" maxW="4xl" mx="auto" pt={0} px={{ base: 4, md: 6 }} pb={{ base: 4, md: 6 }}>
-
-      {/* Navigation */}
-      <HStack justify="space-between" align="center">
-        <Button
-          variant="ghost"
-          colorPalette="orange"
-          size={{ base: "md", md: "sm" }}
-          leftIcon={<ArrowLeft size={16} />}
-          onClick={onStartOver}
-          minH="44px"
-        >
-          Start Over
-        </Button>
-
-        <Button
-          variant="ghost"
-          colorPalette="orange"
-          size={{ base: "md", md: "sm" }}
-          leftIcon={<RotateCcw size={16} />}
-          onClick={onTryAgain}
-          minH="44px"
-        >
-          Try Again
-        </Button>
-      </HStack>
 
       {/* Header */}
       <VStack spacing={4} textAlign="center">
@@ -132,23 +86,6 @@ export function RecipeSuggestions({
           <Text color="neutral.600" textAlign="center">
             No recipes generated. Please try again.
           </Text>
-          <HStack spacing={4}>
-            <Button
-              colorPalette="orange"
-              onClick={onTryAgain}
-              leftIcon={<RotateCcw size={16} />}
-            >
-              Try Again
-            </Button>
-            <Button
-              variant="outline"
-              colorPalette="orange"
-              onClick={onStartOver}
-              leftIcon={<ArrowLeft size={16} />}
-            >
-              Start Over
-            </Button>
-          </HStack>
         </VStack>
       )}
     </VStack>

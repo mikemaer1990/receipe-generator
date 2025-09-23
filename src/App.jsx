@@ -253,8 +253,6 @@ function App() {
             error={error}
             formData={formData}
             onRecipeSelect={handleRecipeSelect}
-            onStartOver={handleStartOver}
-            onTryAgain={handleTryAgain}
             onRetry={handleTryAgain}
           />
         )}
@@ -265,8 +263,6 @@ function App() {
             isLoading={isLoading}
             error={error}
             formData={formData}
-            onGenerateNew={handleGenerateNew}
-            onTryDifferent={handleTryDifferent}
             onRetry={handleTryAgain}
           />
         )}

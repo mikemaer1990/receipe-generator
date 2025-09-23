@@ -1,6 +1,7 @@
 import { Card, Text, Button, VStack, HStack, Badge, Box, Tooltip } from "@chakra-ui/react"
 import { ChefHat, Clock, Star, Utensils, ChevronDown, ChevronUp, Leaf, Sprout, Shield, Milk, Zap } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
+import { normalizeCuisineDisplay } from '../../utils/cuisineUtils'
 
 export function RecipeCard({ recipe, onSelect, isLoading }) {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -23,6 +24,9 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
     cuisine: "American",
     dietary: []
   }
+
+  // Normalize cuisine display for consistency
+  const displayCuisine = normalizeCuisineDisplay(metadata.cuisine)
 
   const getDifficultyColor = (difficulty) => {
     switch (difficulty.toLowerCase()) {
@@ -75,7 +79,7 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
     >
       {/* Card Header */}
       <Box
-        bg={`${getCuisineColor(metadata.cuisine)}.50`}
+        bg={`${getCuisineColor(displayCuisine)}.50`}
         borderTopRadius="lg"
         h={{ base: "52px", md: "60px" }}
         p={4}
@@ -148,12 +152,12 @@ export function RecipeCard({ recipe, onSelect, isLoading }) {
           )}
           <Badge
             variant="solid"
-            colorPalette={getCuisineColor(metadata.cuisine)}
+            colorPalette={getCuisineColor(displayCuisine)}
             size="sm"
             flexShrink={0}
             alignSelf="center"
           >
-            {metadata.cuisine}
+            {displayCuisine}
           </Badge>
         </HStack>
       </Box>

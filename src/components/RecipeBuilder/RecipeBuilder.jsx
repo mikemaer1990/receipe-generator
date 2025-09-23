@@ -170,7 +170,7 @@ export function RecipeBuilder({ onGenerateRecipes, isLoading }) {
         </Button>
       </Box>
 
-      <style jsx>{`
+      <style>{`
         @keyframes pulse {
           0%, 100% {
             opacity: 1;

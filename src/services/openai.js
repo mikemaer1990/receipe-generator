@@ -166,6 +166,12 @@ ${cookingStyle ? `- Style: ${cookingStyle}` : ''}
 
 Please provide:
 
+METADATA:
+- Prep time (realistic time like '25 mins' or '1 hour')
+- Difficulty (Easy/Medium/Hard based on cooking complexity)
+- Cuisine (primary cuisine style like 'Italian', 'Asian', 'Mediterranean', 'American')
+- Dietary restrictions (array like 'vegetarian', 'gluten-free', 'dairy-free' or none)
+
 INGREDIENTS:
 - List all ingredients with exact measurements in metric units
 
@@ -190,7 +196,7 @@ Format the response clearly with these exact section headers.`
         }
       ],
       temperature: 0.7,
-      max_tokens: 1200
+      max_tokens: 1500
     })
 
     const content = response.data.choices[0]?.message?.content
@@ -283,7 +289,8 @@ function parseFullRecipe(content, title) {
     title,
     ingredients: [],
     instructions: [],
-    nutrition: {}
+    nutrition: {},
+    metadata: {}
   }
 
   const lines = content.split('\n')
@@ -293,7 +300,10 @@ function parseFullRecipe(content, title) {
     const trimmedLine = line.trim()
     if (!trimmedLine) continue
 
-    if (trimmedLine.toUpperCase().includes('INGREDIENTS')) {
+    if (trimmedLine.toUpperCase().includes('METADATA')) {
+      currentSection = 'metadata'
+      continue
+    } else if (trimmedLine.toUpperCase().includes('INGREDIENTS')) {
       currentSection = 'ingredients'
       continue
     } else if (trimmedLine.toUpperCase().includes('INSTRUCTIONS')) {
@@ -304,7 +314,37 @@ function parseFullRecipe(content, title) {
       continue
     }
 
-    if (currentSection === 'ingredients' && (trimmedLine.startsWith('-') || trimmedLine.startsWith('•'))) {
+    if (currentSection === 'metadata') {
+      // Parse metadata info
+      const lowerLine = trimmedLine.toLowerCase()
+
+      if (lowerLine.includes('prep time') || lowerLine.includes('time')) {
+        const match = trimmedLine.match(/(\d+(?:\.\d+)?\s*(?:mins?|minutes?|hours?|hrs?))/i)
+        if (match) {
+          sections.metadata.prepTime = match[1]
+        }
+      } else if (lowerLine.includes('difficulty')) {
+        const match = trimmedLine.match(/(easy|medium|hard)/i)
+        if (match) {
+          sections.metadata.difficulty = match[1].charAt(0).toUpperCase() + match[1].slice(1).toLowerCase()
+        }
+      } else if (lowerLine.includes('cuisine')) {
+        const match = trimmedLine.match(/cuisine[:\s]+([a-zA-Z\s]+)/i)
+        if (match) {
+          sections.metadata.cuisine = match[1].trim()
+        }
+      } else if (lowerLine.includes('dietary')) {
+        // Handle dietary restrictions - look for common terms
+        const dietary = []
+        if (lowerLine.includes('vegetarian')) dietary.push('vegetarian')
+        if (lowerLine.includes('vegan')) dietary.push('vegan')
+        if (lowerLine.includes('gluten-free')) dietary.push('gluten-free')
+        if (lowerLine.includes('dairy-free')) dietary.push('dairy-free')
+        if (lowerLine.includes('keto')) dietary.push('keto')
+        if (lowerLine.includes('low-carb')) dietary.push('low-carb')
+        sections.metadata.dietary = dietary
+      }
+    } else if (currentSection === 'ingredients' && (trimmedLine.startsWith('-') || trimmedLine.startsWith('•'))) {
       sections.ingredients.push(trimmedLine.substring(1).trim())
     } else if (currentSection === 'instructions' && /^\d+\./.test(trimmedLine)) {
       sections.instructions.push(trimmedLine)
@@ -338,6 +378,15 @@ function parseFullRecipe(content, title) {
         }
       }
     }
+  }
+
+  // Apply validation to metadata like we do for recipe suggestions
+  // Ensure we always have valid metadata, even if parsing fails
+  try {
+    sections.metadata = validateMetadata(sections.metadata)
+  } catch (error) {
+    console.warn('Failed to validate metadata, using defaults:', error)
+    sections.metadata = getDefaultMetadata()
   }
 
   return sections
