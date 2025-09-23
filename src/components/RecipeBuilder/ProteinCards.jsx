@@ -1,6 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { SimpleGrid, HStack, Card, Box, Text, NumberInput, VStack, Input, Button } from "@chakra-ui/react"
 import { Bird, Fish, Egg, Plus, Beef, Ham, Leaf, CircleDot, Drumstick, Shield } from "lucide-react"
+
+const toTitleCase = (str) => {
+  return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
+}
 
 const proteinOptions = [
   {
@@ -72,13 +76,13 @@ const proteinOptions = [
 const chickenSubOptions = [
   {
     id: 'chicken-thighs',
-    name: 'Chicken Thighs',
+    name: 'Chicken Thigh',
     icon: Drumstick,
     color: 'yellow'
   },
   {
     id: 'chicken-breasts',
-    name: 'Chicken Breasts',
+    name: 'Chicken Breast',
     icon: Shield,
     color: 'yellow'
   }
@@ -88,8 +92,8 @@ const chickenSubOptions = [
 const ChickenDefaultView = ({ isSelected, onClick, selectedProtein }) => {
   // Determine which chicken type is selected, if any
   const selectedChickenType = chickenSubOptions.find(option => option.id === selectedProtein)
-  const IconComponent = selectedChickenType ? selectedChickenType.icon : Bird
-  const displayText = selectedChickenType ? selectedChickenType.name : "Chicken"
+  const IconComponent = Bird
+  const displayText = selectedChickenType ? selectedChickenType.name.replace('Chicken ', '') : "Chicken"
 
   return (
     <Box
@@ -124,13 +128,17 @@ const ChickenDefaultView = ({ isSelected, onClick, selectedProtein }) => {
 }
 
 // Component for the split chicken view (two halves)
-const ChickenSplitView = ({ selectedProtein, onSubOptionClick }) => (
+const ChickenSplitView = ({ selectedProtein, onSubOptionClick }) => {
+  const [hoveredHalf, setHoveredHalf] = useState(null)
+
+  return (
   <HStack
     spacing={0}
     h="full"
     transition="all 0.3s ease-in-out"
     opacity={1}
     transform="scale(1)"
+    px={1}
   >
     {chickenSubOptions.map((subOption, index) => {
       const SubIconComponent = subOption.icon
@@ -146,33 +154,29 @@ const ChickenSplitView = ({ selectedProtein, onSubOptionClick }) => (
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
-          p={2}
+          px={1}
+          py={2}
           cursor="pointer"
           onClick={(e) => {
             e.stopPropagation()
             onSubOptionClick(subOption.id)
           }}
-          borderRightWidth={isLeft ? "1px" : "0"}
-          borderColor="whiteAlpha.300"
-          bg={isSubSelected ?
-            'linear-gradient(135deg, #dd6b20, #c05621)'
-            : 'transparent'
-          }
+          bg="transparent"
           _hover={{
-            bg: isSubSelected ?
-              'linear-gradient(135deg, #dd6b20, #c05621)'
-              : 'whiteAlpha.200'
+            bg: 'whiteAlpha.200'
           }}
           transition="all 0.2s ease"
+          onMouseEnter={() => setHoveredHalf(subOption.id)}
+          onMouseLeave={() => setHoveredHalf(null)}
         >
           <SubIconComponent
             size={18}
-            color={isSubSelected ? "white" : "var(--chakra-colors-neutral-600)"}
+            color={hoveredHalf === subOption.id ? "var(--chakra-colors-orange-600)" : "var(--chakra-colors-neutral-600)"}
           />
           <Text
             fontSize="xs"
             fontWeight="medium"
-            color={isSubSelected ? "white" : "neutral.700"}
+            color={hoveredHalf === subOption.id ? "orange.600" : "neutral.700"}
             textAlign="center"
             mt={1}
             lineHeight={1.1}
@@ -183,10 +187,22 @@ const ChickenSplitView = ({ selectedProtein, onSubOptionClick }) => (
       )
     })}
   </HStack>
-)
+  )
+}
 
 export function ProteinCards({ selectedProtein, proteinAmount = 300, customProteinName = '', onProteinChange, onAmountChange, onCustomProteinChange }) {
   const [chickenSplitState, setChickenSplitState] = useState('default') // 'default' | 'split'
+
+  // Auto-submit custom protein after user stops typing
+  useEffect(() => {
+    if (selectedProtein === 'other' && customProteinName.trim()) {
+      const timeoutId = setTimeout(() => {
+        onProteinChange('other')
+      }, 1500) // 1.5 second delay
+
+      return () => clearTimeout(timeoutId)
+    }
+  }, [customProteinName, selectedProtein, onProteinChange])
 
   const handleProteinClick = (proteinId) => {
     if (proteinId === 'chicken') {
@@ -215,7 +231,7 @@ export function ProteinCards({ selectedProtein, proteinAmount = 300, customProte
         {proteinOptions.map((protein) => {
           const IconComponent = protein.icon
           const isSelected = protein.id === 'chicken'
-            ? (selectedProtein === 'chicken-thighs' || selectedProtein === 'chicken-breasts')
+            ? (selectedProtein === 'chicken-thighs' || selectedProtein === 'chicken-breasts') && chickenSplitState === 'default'
             : selectedProtein === protein.id
 
           return (
@@ -280,7 +296,7 @@ export function ProteinCards({ selectedProtein, proteinAmount = 300, customProte
                     mt={2}
                     lineHeight={1.2}
                   >
-                    {protein.name}
+                    {protein.id === 'other' && customProteinName.trim() ? toTitleCase(customProteinName) : protein.name}
                   </Text>
                 </Box>
               )}
@@ -313,39 +329,28 @@ export function ProteinCards({ selectedProtein, proteinAmount = 300, customProte
           <Text fontSize="md" fontWeight="medium" color="neutral.700" mb={2}>
             Protein Name
           </Text>
-          <Box position="relative" maxW="300px">
+          <Box maxW="300px">
             <Input
               placeholder="Enter protein name (e.g., tofu, beef, etc.)"
               value={customProteinName}
               onChange={(e) => onCustomProteinChange(e.target.value)}
+              onBlur={() => {
+                if (customProteinName.trim()) {
+                  onProteinChange('other')
+                }
+              }}
               onKeyPress={(e) => {
                 if (e.key === 'Enter' && customProteinName.trim()) {
-                  // Could add any specific logic here if needed
+                  onProteinChange('other')
                 }
               }}
               _focus={{ borderColor: "primary.500" }}
               _placeholder={{ color: 'neutral.400' }}
-              pr="3rem"
             />
-            <Button
-              position="absolute"
-              right="4px"
-              top="50%"
-              transform="translateY(-50%)"
-              size="sm"
-              colorPalette="orange"
-              variant="solid"
-              disabled={!customProteinName.trim()}
-              borderRadius="md"
-              minW="auto"
-              h="calc(100% - 8px)"
-              px={2}
-            >
-              <Plus size={16} />
-            </Button>
           </Box>
         </Box>
       )}
+
 
       <Box>
         <Text fontSize="md" fontWeight="medium" color="neutral.700" mb={2}>

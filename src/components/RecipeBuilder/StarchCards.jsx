@@ -1,5 +1,10 @@
+import { useEffect } from 'react'
 import { SimpleGrid, HStack, Card, Box, Text, VStack, Input, Button } from "@chakra-ui/react"
 import { Wheat, Beef, Cookie, X, Plus } from "lucide-react"
+
+const toTitleCase = (str) => {
+  return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
+}
 
 const starchOptions = [
   {
@@ -49,6 +54,17 @@ const starchOptions = [
 ]
 
 export function StarchCards({ selectedStarch, customStarchName = '', onStarchChange, onCustomStarchChange }) {
+  // Auto-submit custom starch after user stops typing
+  useEffect(() => {
+    if (selectedStarch === 'other' && customStarchName.trim()) {
+      const timeoutId = setTimeout(() => {
+        onStarchChange('other')
+      }, 1500) // 1.5 second delay
+
+      return () => clearTimeout(timeoutId)
+    }
+  }, [customStarchName, selectedStarch, onStarchChange])
+
   return (
     <VStack spacing={4} align="stretch">
       <Text fontSize="xl" fontWeight="semibold" color="neutral.700">
@@ -109,7 +125,7 @@ export function StarchCards({ selectedStarch, customStarchName = '', onStarchCha
                   mt={2}
                   lineHeight={1.2}
                 >
-                  {starch.name}
+                  {starch.id === 'other' && customStarchName.trim() ? toTitleCase(customStarchName) : starch.name}
                 </Text>
               </Box>
 
@@ -140,39 +156,28 @@ export function StarchCards({ selectedStarch, customStarchName = '', onStarchCha
           <Text fontSize="md" fontWeight="medium" color="neutral.700" mb={2}>
             Starch Name
           </Text>
-          <Box position="relative" maxW="300px">
+          <Box maxW="300px">
             <Input
               placeholder="Enter starch name (e.g., quinoa, couscous, etc.)"
               value={customStarchName}
               onChange={(e) => onCustomStarchChange(e.target.value)}
+              onBlur={() => {
+                if (customStarchName.trim()) {
+                  onStarchChange('other')
+                }
+              }}
               onKeyPress={(e) => {
                 if (e.key === 'Enter' && customStarchName.trim()) {
-                  // Could add any specific logic here if needed
+                  onStarchChange('other')
                 }
               }}
               _focus={{ borderColor: "primary.500" }}
               _placeholder={{ color: 'neutral.400' }}
-              pr="3rem"
             />
-            <Button
-              position="absolute"
-              right="4px"
-              top="50%"
-              transform="translateY(-50%)"
-              size="sm"
-              colorPalette="orange"
-              variant="solid"
-              disabled={!customStarchName.trim()}
-              borderRadius="md"
-              minW="auto"
-              h="calc(100% - 8px)"
-              px={2}
-            >
-              <Plus size={16} />
-            </Button>
           </Box>
         </Box>
       )}
+
     </VStack>
   )
 }

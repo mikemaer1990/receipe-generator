@@ -90,14 +90,17 @@ openaiClient.interceptors.response.use(
 )
 
 export async function generateRecipeSuggestions(formData) {
-  const { protein, proteinAmount, customProteinName, starch, extraIngredients, cookingStyle, preference, portions } = formData
+  const { protein, proteinAmount, customProteinName, starch, customStarchName, extraIngredients, cookingStyle, preference, portions } = formData
 
   // Use custom protein name if "other" is selected, otherwise use the protein type
   const proteinName = protein === 'other' ? customProteinName : protein
 
+  // Use custom starch name if "other" is selected, otherwise use the starch type
+  const starchName = starch === 'other' ? customStarchName : starch
+
   const prompt = `Generate 3 different recipe ideas using these ingredients:
 - Protein: ${proteinName} (${proteinAmount}g)
-${starch && starch !== 'none' ? `- Starch: ${starch}` : ''}
+${starch && starch !== 'none' ? `- Starch: ${starchName}` : ''}
 ${extraIngredients?.length ? `- Additional ingredients: ${extraIngredients.join(', ')}` : ''}
 - Portions: ${portions}
 ${cookingStyle ? `- Style: ${cookingStyle}` : ''}
@@ -152,14 +155,17 @@ Base the metadata on the actual recipe requirements, not arbitrary assignment. R
 }
 
 export async function generateFullRecipe(selectedTitle, formData) {
-  const { protein, proteinAmount, customProteinName, starch, extraIngredients, cookingStyle, portions } = formData
+  const { protein, proteinAmount, customProteinName, starch, customStarchName, extraIngredients, cookingStyle, portions } = formData
 
   // Use custom protein name if "other" is selected, otherwise use the protein type
   const proteinName = protein === 'other' ? customProteinName : protein
 
+  // Use custom starch name if "other" is selected, otherwise use the starch type
+  const starchName = starch === 'other' ? customStarchName : starch
+
   const prompt = `Create a detailed recipe for "${selectedTitle}" using:
 - Protein: ${proteinName} (${proteinAmount}g)
-${starch && starch !== 'none' ? `- Starch: ${starch}` : ''}
+${starch && starch !== 'none' ? `- Starch: ${starchName}` : ''}
 ${extraIngredients?.length ? `- Additional ingredients: ${extraIngredients.join(', ')}` : ''}
 - Portions: ${portions}
 ${cookingStyle ? `- Style: ${cookingStyle}` : ''}
